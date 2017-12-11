@@ -566,6 +566,7 @@ public static class T extends Shape {
 		if (heights[x] <= 6) {
 			return new int[] {1, x + 1, heights[x + 1]};
 		}
+		return new int[] {2, 10, heights[10] + 1};
 	}
 }
 
@@ -636,6 +637,7 @@ public static class Z extends Shape {
 		if (heights[x] <= 9) {
 			return new int[] {0, x + 1, heights[x + 1]};
 		}
+		return new int[] {1, 9, heights[9] + 1};
 	}
 }
 
@@ -705,6 +707,7 @@ public void insert(int type, Board board, int x, int y) {
 		if (heights[x] <= 9) {
 			return new int[] {0, x + 1, heights[x + 1]};
 		}
+		return new int[] {1, 1, heights[1] + 1};
 	}
 }
 }
