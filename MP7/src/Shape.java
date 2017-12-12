@@ -1,5 +1,4 @@
 
-
 public class Shape {
 	
 	int x = 0;
@@ -256,8 +255,7 @@ public class Shape {
 			}
 			scores = new int [8];
 			for (int i = 0; i < heights.length - 2; i++) {
-				if ((heights[i] == heights[i + 1] && heights[i] == heights[i + 2] + 1) 
-						|| (heights[i] == heights[i + 1] + 1 && heights[i] == heights[i + 2])
+				if ((heights[i] == heights[i + 1] + 1 && heights[i] == heights[i + 2])
 						|| (heights[i + 1] == heights[i] + 1 && heights[i + 1] == heights[i + 2])) {
 					scores[i] = heights[i];
 				} else {
@@ -346,6 +344,145 @@ public class Shape {
 				}
 			}
 			Board.clearLines(board);
+		}
+		
+		public int[] detect(Board board) {
+			int[] heights = Board.getHeight(board);
+			int[] scores = new int[board.width - 1];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i] == heights[i + 1] + 2) {
+					scores[i] = heights[i + 1];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			int x = 0;
+			int min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x + 1] <= 7) {
+				return new int[] {2, x + 1, heights[x + 1]};
+			}
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i] == heights[i + 1] && heights[i] + 1 == heights[i + 2]) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {3, x, heights[x]};
+			}
+			for (int i = 0; i < heights.length - 2; i++) {
+				if (heights[i] == heights[i + 1] && heights[i + 1] == heights[i + 2]) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {1, x, heights[x]};
+			}
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if ((heights[i + 2] == heights[i] + 1 && heights[i + 2] == heights[i + 1] + 1)
+						|| (heights[i + 1] == heights[i] + 1 && heights[i + 1] == heights[i + 2] + 1)) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {3, x, heights[x]};
+			}
+			scores = new int[9];
+			for (int i = 0; i < heights.length - 1; i++) {
+				if (heights[i] == heights[i + 1]) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {0, x, heights[x]};
+			}
+			scores = new int [8];
+			for (int i = 0; i < heights.length - 2; i++) {
+				if ((heights[i] == heights[i + 1] && heights[i] == heights[i + 2] + 1) 
+						|| (heights[i] == heights[i + 1] + 1 && heights[i] == heights[i + 2])) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {1, x, heights[x]};
+			}
+			for (int i = 0; i <= 7; i++) {
+				if (heights[i] > heights[i + 1] && heights[i] > heights[i + 2]) {
+					scores[i] = heights[i];
+				} else if (heights[i + 1] > heights[i] && heights[i + 1] > heights[i + 2]) {
+					scores[i] = heights[i + 1];
+				} else if (heights[i + 2] > heights[i] && heights[i + 2] > heights[i + 1]) {
+					scores[i] = heights[i + 2];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			return new int[] {1, x, heights[x]};
 		}
 	}
 	
@@ -439,275 +576,275 @@ public class Shape {
 		return new int[] {x, heights[x]};
 	}
 
-public static class T extends Shape {
-	
-	
-	public void insert(int type, Board board, int x, int y) {
+	public static class T extends Shape {
 		
-		if (type == 0) {
-			if (y >= board.height) {
-				Board.GameOver(board);
-				return;
+		
+		public void insert(int type, Board board, int x, int y) {
+			
+			if (type == 0) {
+				if (y >= board.height) {
+					Board.GameOver(board);
+					return;
+				}
+			} else {
+				if (y + 1>= board.height) {
+					Board.GameOver(board);
+					return;
+				}
 			}
-		} else {
+			
+			
+			
+			board.grid[x][y] = 1;     //[x][y]is the center
+			if (type == 0) {
+				board.grid[x - 1][y] = 1;
+				board.grid[x + 1][y] = 1;
+				board.grid[x][y - 1] = 1;
+			}
+			if (type == 1) {
+				board.grid[x - 1][y] = 1;
+				board.grid[x + 1][y] = 1;
+				board.grid[x][y + 1] = 1;
+			}
+			if (type == 2) {
+				board.grid[x][y + 1] = 1;
+				board.grid[x][y - 1] = 1;
+				board.grid[x - 1][y] = 1;
+			}
+			if (type == 3) {
+				board.grid[x][y + 1] = 1;
+				board.grid[x][y - 1] = 1;
+				board.grid[x + 1][y] = 1;
+			}
+			Board.clearLines(board);
+			
+		}
+		public int[] detect(Board board) {
+			int[] heights = Board.getHeight(board);
+			int[] scores = new int[board.width - 1];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i + 1] == heights[i] + 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			int x = 0;
+			int min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 7) {
+				return new int[] {3, x, heights[x] + 1};
+			}
+			
+		
+			heights = Board.getHeight(board);
+			scores = new int[board.width - 1];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i + 1] == heights[i] - 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 7) {
+				return new int[] {2, x + 1, heights[x + 1] + 1};
+			}
+			
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i] == heights[i + 2] && heights[i] == heights[i + 1] + 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {0, x + 1, heights[x + 1] + 1};
+			}
+			
+			
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i] == heights[i + 2] && heights[i] == heights[i + 1]) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 6) {
+				return new int[] {1, x + 1, heights[x + 1]};
+			}
+			return new int[] {2, 9, heights[9] + 1};
+		}
+	}
+
+	public static class Z extends Shape {
+		
+		
+		public void insert(int type, Board board, int x, int y) {
+			
 			if (y + 1>= board.height) {
 				Board.GameOver(board);
 				return;
 			}
-		}
 		
-		
-		
-		board.grid[x][y] = 1;     //[x][y]is the center
-		if (type == 0) {
-			board.grid[x - 1][y] = 1;
-			board.grid[x + 1][y] = 1;
-			board.grid[x][y - 1] = 1;
-		}
-		if (type == 1) {
-			board.grid[x - 1][y] = 1;
-			board.grid[x + 1][y] = 1;
-			board.grid[x][y + 1] = 1;
-		}
-		if (type == 2) {
-			board.grid[x][y + 1] = 1;
-			board.grid[x][y - 1] = 1;
-			board.grid[x - 1][y] = 1;
-		}
-		if (type == 3) {
-			board.grid[x][y + 1] = 1;
-			board.grid[x][y - 1] = 1;
-			board.grid[x + 1][y] = 1;
-		}
-		Board.clearLines(board);
-		
-	}
-	public int[] detect(Board board) {
-		int[] heights = Board.getHeight(board);
-		int[] scores = new int[board.width - 1];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i + 1] == heights[i] + 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
+			board.grid[x][y] = 1;        //[x][y]is the center
+			if (type == 0) {
+				board.grid[x + 1][y] = 1;
+				board.grid[x][y + 1] = 1;
+				board.grid[x - 1][y + 1] = 1;
 			}
-		}
-		int x = 0;
-		int min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
+			if (type == 1) {
+				board.grid[x][y - 1] = 1;
+				board.grid[x + 1][y] = 1;
+				board.grid[x + 1][y + 1] = 1;
 			}
+			Board.clearLines(board);
+			
 		}
-		if (heights[x] <= 7) {
-			return new int[] {3, x, heights[x] + 1};
-		}
-		
-	
-		heights = Board.getHeight(board);
-		scores = new int[board.width - 1];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i + 1] == heights[i] - 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
-			}
-		}
-		x = 0;
-		min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
-			}
-		}
-		if (heights[x] <= 7) {
-			return new int[] {2, x + 1, heights[x + 1] + 1};
-		}
-		
-		scores = new int[8];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i] == heights[i + 2] && heights[i] == heights[i + 1] + 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
-			}
-		}
-		x = 0;
-		min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
-			}
-		}
-		if (heights[x] <= 9) {
-			return new int[] {0, x + 1, heights[x + 1] + 1};
-		}
-		
-		
-		scores = new int[8];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i] == heights[i + 2] && heights[i] == heights[i + 1]) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
-			}
-		}
-		x = 0;
-		min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
-			}
-		}
-		if (heights[x] <= 6) {
-			return new int[] {1, x + 1, heights[x + 1]};
-		}
-		return new int[] {2, 10, heights[10] + 1};
-	}
-}
 
-public static class Z extends Shape {
-	
-	
+
+		public int[] detect(Board board) {
+			int[] heights = Board.getHeight(board);
+			int[] scores = new int[board.width - 1];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i + 1] == heights[i] + 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			int x = 0;
+			int min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 7) {
+				return new int[] {1, x, heights[x] + 1};
+			}
+			
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i + 2] == heights[i + 1] && heights[i + 1] == heights[i] - 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
+			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {0, x + 1, heights[x + 1]};
+			}
+			return new int[] {1, 8, heights[8] + 1};
+		}
+	}
+
+	public static class S extends Shape {
+		
+		
 	public void insert(int type, Board board, int x, int y) {
+			
+			if (y + 1>= board.height) {
+				Board.GameOver(board);
+				return;
+			}
 		
-		if (y + 1>= board.height) {
-			Board.GameOver(board);
-			return;
+			board.grid[x][y] = 1;        //[x][y]is the center
+			if (type == 0) {
+				board.grid[x - 1][y] = 1;
+				board.grid[x][y + 1] = 1;
+				board.grid[x + 1][y + 1] = 1;
+			}
+			if (type == 1) {
+				board.grid[x][y - 1] = 1;
+				board.grid[x - 1][y] = 1;
+				board.grid[x - 1][y + 1] = 1;
+			}
+			Board.clearLines(board);
+			
 		}
-	
-		board.grid[x][y] = 1;        //[x][y]is the center
-		if (type == 0) {
-			board.grid[x + 1][y] = 1;
-			board.grid[x][y + 1] = 1;
-			board.grid[x - 1][y + 1] = 1;
-		}
-		if (type == 1) {
-			board.grid[x][y - 1] = 1;
-			board.grid[x + 1][y] = 1;
-			board.grid[x + 1][y + 1] = 1;
-		}
-		Board.clearLines(board);
-		
-	}
 
-
-	public int[] detect(Board board) {
-		int[] heights = Board.getHeight(board);
-		int[] scores = new int[board.width - 1];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i + 1] == heights[i] + 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
+		public int[] detect(Board board) {
+			int[] heights = Board.getHeight(board);
+			int[] scores = new int[board.width - 1];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i + 1] + 1 == heights[i]) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
 			}
-		}
-		int x = 0;
-		int min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
+			int x = 0;
+			int min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
 			}
-		}
-		if (heights[x] <= 7) {
-			return new int[] {1, x, heights[x] + 1};
-		}
-		
-		scores = new int[8];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i + 2] == heights[i + 1] && heights[i + 1] == heights[i] - 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
+			if (heights[x] <= 7) {
+				return new int[] {1, x + 1, heights[x + 1] + 1};
 			}
-		}
-		x = 0;
-		min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
+			
+			scores = new int[8];
+			for (int i = 0; i < scores.length; i++) {
+				if (heights[i] == heights[i + 1] && heights[i] == heights[i + 2] - 1) {
+					scores[i] = heights[i];
+				} else {
+					scores[i] = 10;
+				}
 			}
+			x = 0;
+			min = scores[0];
+			for (int i = 1; i < scores.length; i++) {
+				if (scores[i] < min) {
+					min = scores[i];
+					x = i;
+				}
+			}
+			if (heights[x] <= 9) {
+				return new int[] {0, x + 1, heights[x + 1]};
+			}
+			return new int[] {1, 1, heights[1] + 1};
 		}
-		if (heights[x] <= 9) {
-			return new int[] {0, x + 1, heights[x + 1]};
-		}
-		return new int[] {1, 9, heights[9] + 1};
 	}
-}
-
-public static class S extends Shape {
-	
-	
-public void insert(int type, Board board, int x, int y) {
-		
-		if (y + 1>= board.height) {
-			Board.GameOver(board);
-			return;
-		}
-	
-		board.grid[x][y] = 1;        //[x][y]is the center
-		if (type == 0) {
-			board.grid[x - 1][y] = 1;
-			board.grid[x][y + 1] = 1;
-			board.grid[x + 1][y + 1] = 1;
-		}
-		if (type == 1) {
-			board.grid[x][y - 1] = 1;
-			board.grid[x - 1][y] = 1;
-			board.grid[x - 1][y + 1] = 1;
-		}
-		Board.clearLines(board);
-		
-	}
-
-	public int[] detect(Board board) {
-		int[] heights = Board.getHeight(board);
-		int[] scores = new int[board.width - 1];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i + 1] + 1 == heights[i]) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
-			}
-		}
-		int x = 0;
-		int min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
-			}
-		}
-		if (heights[x] <= 7) {
-			return new int[] {1, x + 1, heights[x + 1] + 1};
-		}
-		
-		scores = new int[8];
-		for (int i = 0; i < scores.length; i++) {
-			if (heights[i] == heights[i + 1] && heights[i] == heights[i + 2] - 1) {
-				scores[i] = heights[i];
-			} else {
-				scores[i] = 10;
-			}
-		}
-		x = 0;
-		min = scores[0];
-		for (int i = 1; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-				x = i;
-			}
-		}
-		if (heights[x] <= 9) {
-			return new int[] {0, x + 1, heights[x + 1]};
-		}
-		return new int[] {1, 1, heights[1] + 1};
-	}
-}
 }
